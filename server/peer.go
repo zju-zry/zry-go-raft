@@ -27,7 +27,6 @@ type server struct {
 	proto.UnimplementedPeerServer
 	// 事件通道，之后收到的服务的信息在循环中进行处理
 	c chan *common.Ev
-
 }
 
 /**
@@ -44,7 +43,7 @@ func (s *server) SendVoteRequest(ctx context.Context, in *proto.VoteRequest) (*p
 	那怎么在丢给主循环做这个事情之后获得返回值呢？
 	可以使用chan去获取返回值，但是这就要求在chan中必须返回值
 	经过一天的卡点，我决定使用最新的方式实现这么个功能。
-	 */
+	*/
 	log.Printf("Received: %v", in.GetCandidateName())
 	// 1. 创建一个新的通道
 	ev := &common.Ev{Target: in, ReturnC: make(chan bool)}
@@ -53,13 +52,12 @@ func (s *server) SendVoteRequest(ctx context.Context, in *proto.VoteRequest) (*p
 	s.c <- ev
 	fmt.Println("已经将请求事件告知了循环")
 	// 3. 等待循环的处理结果
-	<- ev.ReturnC
+	<-ev.ReturnC
 	fmt.Println("循环体已经执行结束啦，开始执行server的返回")
 	// 4. 将处理好的结果进行一个返还
 	return ev.ReturnValue.(*proto.VoteReply), nil
 
 }
-
 
 /**
  * @Description: 处理客户端发送过来的日志信息
@@ -75,11 +73,10 @@ func (s *server) AppendEntries(ctx context.Context, in *proto.AppendEntriesReque
 	// 2. 将这个通道传入到server端
 	s.c <- ev
 	// 3. 等待循环的处理结果
-	<- ev.ReturnC
+	<-ev.ReturnC
 	// 4. 将处理好的结果进行一个返还
 	return ev.ReturnValue.(*proto.AppendEntriesReply), nil
 }
-
 
 /**
  * @Description: 完成对server对象的初始化
@@ -93,13 +90,12 @@ func NewServer() *server {
 	}
 }
 
-
 /**
  * @Description: 启动对其他peer节点的服务
  * @author zhangruiyuan
  * @date 2021/1/16 3:41 下午
  */
-func (s *server)Start() {
+func (s *server) Start() {
 	defer fmt.Println("节点服务关闭成功")
 	// 1. 启动监听grpc服务的信息
 	lis, err := net.Listen("tcp", ":"+config.Myconfig.Port)
@@ -112,7 +108,6 @@ func (s *server)Start() {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
-
 
 /**
  * @Description: server对象的主要循环
@@ -138,7 +133,7 @@ func (s *server) Loop() {
 
 	defer fmt.Println("循环关闭")
 	for {
-		switch config.Myconfig.State{
+		switch config.Myconfig.State {
 		case config.StateFollower:
 			s.followerLoop()
 		case config.StateCandidate:
@@ -149,14 +144,14 @@ func (s *server) Loop() {
 	}
 }
 
-
 /**
  * @Description: 追随者的循环
  * @author zhangruiyuan
  * @date 2021/1/16 8:53 下午
  */
 func (s *server) followerLoop() {
-	for config.Myconfig.State == config.StateFollower{
+	//
+	for config.Myconfig.State == config.StateFollower {
 		select {
 		case e := <-s.c:
 			switch req := e.Target.(type) {
@@ -164,13 +159,12 @@ func (s *server) followerLoop() {
 				fmt.Println(req.GetLeaderName())
 
 			case *proto.VoteRequest:
-				e.ReturnValue = &proto.VoteReply{Term: 1,VoteGranted: 1}
+				e.ReturnValue = &proto.VoteReply{Term: 1, VoteGranted: 1}
 				e.ReturnC <- true
 			}
 		}
 	}
 }
-
 
 /**
  * @Description: 候选者的循环
@@ -181,7 +175,6 @@ func (s *server) candidateLoop() {
 
 }
 
-
 /**
  * @Description: 领导者的循环
  * @author zhangruiyuan
@@ -190,6 +183,3 @@ func (s *server) candidateLoop() {
 func (s *server) leaderLoop() {
 
 }
-
-
-
