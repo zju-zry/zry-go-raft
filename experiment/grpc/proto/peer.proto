@@ -1,0 +1,50 @@
+/**
+ *  启动命令  protoc --go_out=plugins=grpc:../../../../ peer.proto
+ */
+
+syntax = "proto3";
+
+option go_package = "zry-raft/experiment/grpc/proto";
+
+package grpc;
+
+
+/**
+ * @Description: peer节点的请求以及服务
+ * @author zhangruiyuan
+ * @date 2021/1/15 9:04 下午
+ */
+service Peer {
+
+  /**
+   * @Description: 向其他peer节点发送投票请求
+   * @author zhangruiyuan
+   * @date 2021/1/15 9:04 下午
+   */
+  rpc SendVoteRequest (VoteRequest) returns (VoteReply) {}
+
+}
+
+
+/**
+ * @Description: 投票请求的参数
+ * @author zhangruiyuan
+ * @date 2021/1/15 9:05 下午
+ */
+message VoteRequest {
+  int64 Term = 1;
+  int64 LastLogIndex = 2;
+  int64 LastLogTerm = 3;
+  string CandidateName = 4;
+}
+
+
+/**
+ * @Description: 请求投票相应的参数
+ * @author zhangruiyuan
+ * @date 2021/1/15 9:05 下午
+ */
+message VoteReply {
+  int64 Term = 1;
+  int64 VoteGranted = 2;
+}

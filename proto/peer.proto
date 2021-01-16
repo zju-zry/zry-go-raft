@@ -1,0 +1,82 @@
+/**
+ *  启动命令  protoc --go_out=plugins=grpc:../../ peer.proto
+ */
+
+syntax = "proto3";
+
+option go_package = "zry-raft/proto";
+
+package server;
+
+
+/**
+ * @Description: peer节点的请求以及服务
+ * @author zhangruiyuan
+ * @date 2021/1/15 9:04 下午
+ */
+service Peer {
+
+  /**
+   * @Description: 向其他peer节点发送投票请求
+   * @author zhangruiyuan
+   * @date 2021/1/15 9:04 下午
+   */
+  rpc SendVoteRequest (VoteRequest) returns (VoteReply) {}
+  rpc AppendEntries (AppendEntriesRequest) returns (AppendEntriesReply){}
+
+}
+
+
+/**
+ * @Description: 投票请求的参数
+ * @author zhangruiyuan
+ * @date 2021/1/15 9:05 下午
+ */
+message VoteRequest {
+  int64 Term = 1;
+  int64 LastLogIndex = 2;
+  int64 LastLogTerm = 3;
+  string CandidateName = 4;
+}
+
+/**
+ * @Description: 请求投票相应的参数
+ * @author zhangruiyuan
+ * @date 2021/1/15 9:05 下午
+ */
+message VoteReply {
+  int64 Term = 1;
+  int64 VoteGranted = 2;
+}
+
+
+/**
+ * @Description: 向一个peer节点请求时需要发送的信息
+ * @author zhangruiyuan
+ * @date 2021/1/16 12:55 下午
+ */
+message AppendEntriesRequest {
+  // 当前的任期
+  int64  Term = 1;
+  // 上一个日志索引
+  int64  PrevLogIndex = 2;
+  // 上一个日志的任期
+  int64  PrevLogTerm = 3;
+  // 提交索引
+  int64  CommitIndex = 4;
+  // 当前节点的名称
+  string  LeaderName = 5;
+}
+
+
+/**
+ * @Description: 向一个peer节点请求时发送的信息
+ * @author zhangruiyuan
+ * @date 2021/1/16 12:55 下午
+ */
+message AppendEntriesReply {
+  // 当前的任期
+  int64  Term = 1;
+  // 自己当前节点的上一个日志索引信息
+  int64  PrevLogIndex = 2;
+}
