@@ -1,5 +1,5 @@
 /**
- * @note: grpc测试
+ * @note: 节点的服务端，将本节点作为服务响应请求
  * @author: zhangruiyuan
  * @date:2021/1/15
 **/
@@ -23,10 +23,24 @@ import (
  * @date 2021/1/16 2:57 下午
  */
 type server struct {
+	Peers []Peer
 	// server需要继承以下服务
 	proto.UnimplementedPeerServer
 	// 事件通道，之后收到的服务的信息在循环中进行处理
 	c chan *common.Ev
+	// 保护当前server节点信息？
+	// sync包中的WaitGroup实现了一个类似任务队列的结构，你可以向队列中加入任务，任务完成后就把任务从队列中移除，如果队列中的任务没有全部完成，队列就会触发阻塞以阻止程序继续运
+	// 这个东西的用处我当前还不是很清楚
+	//routineGroup sync.WaitGroup
+}
+
+/**
+ * @Description: 返回成为leader需要的选票的数量
+ * @author zhangruiyuan
+ * @date 2021/1/17 2:36 下午
+ */
+func (s *server) QuorumSize() int {
+	return (len(s.Peers) / 2) + 1
 }
 
 /**
@@ -84,10 +98,39 @@ func (s *server) AppendEntries(ctx context.Context, in *proto.AppendEntriesReque
  * @date 2021/1/16 8:25 下午
  */
 func NewServer() *server {
-	defer fmt.Println("初始化server中变量信息完成")
-	return &server{
+	// 1. 初始化server文件
+	s := &server{
 		c: make(chan *common.Ev, 256),
+		// 配置其他节点的信息（其中包含有本机的信息）
+		Peers: []Peer{
+			{
+				Name:             "org1.node1.order1",
+				ConnectionString: "127.0.0.1:7061",
+			},
+			{
+				Name:             "org1.node2.order1",
+				ConnectionString: "127.0.0.1:7062",
+			},
+			{
+				Name:             "org2.node1.order1",
+				ConnectionString: "127.0.0.1:7063",
+			},
+			{
+				Name:             "org2.node2.order1",
+				ConnectionString: "127.0.0.1:7064",
+			},
+		},
 	}
+	// 2. 根据配置的字符串和ip信息，移除一下本节点的peer
+	for i, p := range s.Peers {
+		if p.ConnectionString == config.Myconfig.Ip+":"+config.Myconfig.Port {
+			s.Peers = append(s.Peers[:i], s.Peers[i+1:]...)
+		}
+	}
+	fmt.Println("已知的其他节点的信息为：", s.Peers)
+	// 3. 返还字符串的信息
+	fmt.Println("初始化server中变量信息完成")
+	return s
 }
 
 /**
@@ -107,79 +150,4 @@ func (s *server) Start() {
 	if err := sr.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
-}
-
-/**
- * @Description: server对象的主要循环
- * @author zhangruiyuan
- * @date 2021/1/16 8:41 下午
- */
-func (s *server) Loop() {
-	// 本段代码的主要逻辑为判断当前的状态信息，然后决定走哪一个循环
-	// 以下是raft的状态转换图
-	//--------------------------------------
-	//               ________
-	//            --|Snapshot|                 timeout
-	//            |  --------                  ______
-	// recover    |       ^                   |      |
-	// snapshot / |       |snapshot           |      |
-	// higher     |       |                   v      |     recv majority votes
-	// term       |    --------    timeout    -----------                        -----------
-	//            |-> |Follower| ----------> | Candidate |--------------------> |  Leader   |
-	//                 --------               -----------                        -----------
-	//                    ^          higher term/ |                         higher term |
-	//                    |            new leader |                                     |
-	//                    |_______________________|____________________________________ |
-
-	defer fmt.Println("循环关闭")
-	for {
-		switch config.Myconfig.State {
-		case config.StateFollower:
-			s.followerLoop()
-		case config.StateCandidate:
-			s.candidateLoop()
-		case config.StateLeader:
-			s.leaderLoop()
-		}
-	}
-}
-
-/**
- * @Description: 追随者的循环
- * @author zhangruiyuan
- * @date 2021/1/16 8:53 下午
- */
-func (s *server) followerLoop() {
-	//
-	for config.Myconfig.State == config.StateFollower {
-		select {
-		case e := <-s.c:
-			switch req := e.Target.(type) {
-			case *proto.AppendEntriesRequest:
-				fmt.Println(req.GetLeaderName())
-
-			case *proto.VoteRequest:
-				e.ReturnValue = &proto.VoteReply{Term: 1, VoteGranted: 1}
-				e.ReturnC <- true
-			}
-		}
-	}
-}
-
-/**
- * @Description: 候选者的循环
- * @author zhangruiyuan
- * @date 2021/1/16 8:53 下午
- */
-func (s *server) candidateLoop() {
-
-}
-
-/**
- * @Description: 领导者的循环
- * @author zhangruiyuan
- * @date 2021/1/16 8:54 下午
- */
-func (s *server) leaderLoop() {
-
 }

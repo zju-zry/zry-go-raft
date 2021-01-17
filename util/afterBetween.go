@@ -17,7 +17,7 @@ import (
  * @author zhangruiyuan
  * @date 2021/1/16 11:59 下午
  */
-func afterBetween(min time.Duration, max time.Duration) <-chan time.Time {
+func AfterBetween(min time.Duration, max time.Duration) <-chan time.Time {
 	rand := rand.New(rand.NewSource(time.Now().UnixNano()))
 	d, delta := min, (max - min)
 	if delta > 0 {

@@ -2,8 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b9f34bb4-9442-4e02-975d-0a975c855ec6" name="Default Changelist" comment="fix: 在readme文件中修改了倒计时设置">
+      <change afterPath="$PROJECT_DIR$/common/enum/enum.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/question.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/loop.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/peerClient.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/peer.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/server.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/peer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/peerServer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/afterBetween.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/afterBetween.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,12 +29,15 @@
   <component name="GOROOT" url="file:///usr/local/go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedIndex" value="1" />
   </component>
   <component name="ProjectId" id="1mK7vQcJRX0BIVR39KyRZrs2Vfo" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -41,7 +53,7 @@
     <property name="configurable.GoLibrariesConfigurable.is.expanded" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/test/peerServer-AppendEntries" />
-    <property name="settings.editor.selected.configurable" value="editing.templates" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -50,14 +62,14 @@
       <recent name="$PROJECT_DIR$/experiment/grpc/server" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/common/enum" />
       <recent name="$PROJECT_DIR$/test/peerServer" />
       <recent name="$PROJECT_DIR$/test" />
       <recent name="$PROJECT_DIR$/proto" />
       <recent name="$PROJECT_DIR$/server" />
-      <recent name="$PROJECT_DIR$/experiment" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.go build zry-raft/experiment/channel">
+  <component name="RunManager" selected="Go Build.order[7064]">
     <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="zry-raft" />
       <working_directory value="$PROJECT_DIR$" />
@@ -94,10 +106,40 @@
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
-    <configuration name="order[7061]" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true">
+    <configuration name="order[7061]" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="zry-raft" />
       <working_directory value="$PROJECT_DIR$" />
-      <parameters value="-port 7061" />
+      <parameters value="-name org1.node1.order1  -ip 127.0.0.1 -port 7061" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="zry-raft" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="order[7062]" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="zry-raft" />
+      <working_directory value="$PROJECT_DIR$" />
+      <parameters value="-name org1.node2.order1  -ip 127.0.0.1 -port 7062" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="zry-raft" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="order[7063]" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="zry-raft" />
+      <working_directory value="$PROJECT_DIR$" />
+      <parameters value="-name org2.node1.order1  -ip 127.0.0.1 -port 7063" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="zry-raft" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="order[7064]" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="zry-raft" />
+      <working_directory value="$PROJECT_DIR$" />
+      <parameters value="-name org2.node2.order1  -ip 127.0.0.1 -port 7064" />
       <kind value="FILE" />
       <filePath value="$PROJECT_DIR$/main.go" />
       <package value="zry-raft" />
@@ -106,6 +148,9 @@
     </configuration>
     <list>
       <item itemvalue="Go Build.order[7061]" />
+      <item itemvalue="Go Build.order[7062]" />
+      <item itemvalue="Go Build.order[7063]" />
+      <item itemvalue="Go Build.order[7064]" />
       <item itemvalue="Go Build.go build zry-raft/test/peerServer-AppendEntries" />
       <item itemvalue="Go Build.go build zry-raft/experiment/channel" />
       <item itemvalue="Go Build.go build zry-raft/test/peerServer-SendVoteRequest" />
@@ -116,7 +161,6 @@
         <item itemvalue="Go Build.go build zry-raft/experiment/channel" />
         <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Build.go build zry-raft/test/peerServer-SendVoteRequest" />
-        <item itemvalue="Go Build.order[7061]" />
         <item itemvalue="Go Build.go build zry-raft/test/peerServer-AppendEntries" />
       </list>
     </recent_temporary>

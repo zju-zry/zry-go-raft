@@ -7,7 +7,7 @@ import (
 	"zry-raft/server"
 )
 
-func main(){
+func main() {
 
 	// 2 进入到follow的状态
 	// 3 启动后台peer server，不断地接收来自外部的请求
@@ -17,10 +17,9 @@ func main(){
 	go s.Loop()
 	// 5 启动控制台的输入命令
 	command := ""
-	for{
+	for {
 		fmt.Scanln(&command)
-		fmt.Println("正在执行命令：",command)
+		fmt.Println("正在执行命令：", command)
 	}
+
 }
-
-
