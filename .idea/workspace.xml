@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b9f34bb4-9442-4e02-975d-0a975c855ec6" name="Default Changelist" comment="fix: 在readme文件中修改了倒计时设置">
-      <change afterPath="$PROJECT_DIR$/common/enum/enum.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/question.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/loop.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/peerClient.go" afterDir="false" />
+    <list default="true" id="b9f34bb4-9442-4e02-975d-0a975c855ec6" name="Default Changelist" comment="feat: 完成选举功能">
+      <change afterPath="$PROJECT_DIR$/server/peerLoop.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/peer.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/server.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/ev.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event/ax_events.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/event/main.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/peer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/peerServer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/afterBetween.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/afterBetween.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proto/peer.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/proto/peer.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proto/peer.proto" beforeDir="false" afterPath="$PROJECT_DIR$/proto/peer.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/loop.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/peerClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/peerClient.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/peerServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/peerServer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/peerServer-SendVoteRequest/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/peerServer-SendVoteRequest/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,11 +30,13 @@
   </component>
   <component name="GOROOT" url="file:///usr/local/go" />
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
-  </component>
-  <component name="ProblemsViewState">
-    <option name="selectedIndex" value="1" />
   </component>
   <component name="ProjectId" id="1mK7vQcJRX0BIVR39KyRZrs2Vfo" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -69,7 +73,7 @@
       <recent name="$PROJECT_DIR$/server" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.order[7064]">
+  <component name="RunManager" selected="Go Build.order[7062]">
     <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="zry-raft" />
       <working_directory value="$PROJECT_DIR$" />
@@ -158,9 +162,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build zry-raft/test/peerServer-SendVoteRequest" />
         <item itemvalue="Go Build.go build zry-raft/experiment/channel" />
         <item itemvalue="Go Build.go build main.go" />
-        <item itemvalue="Go Build.go build zry-raft/test/peerServer-SendVoteRequest" />
         <item itemvalue="Go Build.go build zry-raft/test/peerServer-AppendEntries" />
       </list>
     </recent_temporary>
@@ -174,15 +178,29 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="dev-1.0" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix: 在readme文件中修改了倒计时设置" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: 在readme文件中修改了倒计时设置" />
+    <MESSAGE value="feat: 完成选举功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 完成选举功能" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

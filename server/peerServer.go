@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"zry-raft/common"
 	"zry-raft/config"
 	"zry-raft/proto"
 
@@ -24,14 +23,6 @@ import (
  */
 type server struct {
 	Peers []Peer
-	// server需要继承以下服务
-	proto.UnimplementedPeerServer
-	// 事件通道，之后收到的服务的信息在循环中进行处理
-	c chan *common.Ev
-	// 保护当前server节点信息？
-	// sync包中的WaitGroup实现了一个类似任务队列的结构，你可以向队列中加入任务，任务完成后就把任务从队列中移除，如果队列中的任务没有全部完成，队列就会触发阻塞以阻止程序继续运
-	// 这个东西的用处我当前还不是很清楚
-	//routineGroup sync.WaitGroup
 }
 
 /**
@@ -51,26 +42,8 @@ func (s *server) QuorumSize() int {
  * @date 2021/1/16 2:55 下午
  */
 func (s *server) SendVoteRequest(ctx context.Context, in *proto.VoteRequest) (*proto.VoteReply, error) {
-	/**
-	处理投票请求的流程。
-	丢给主循环去做这个事情？ 这样可以对系统不同状态下的信息进行统一的管理
-	那怎么在丢给主循环做这个事情之后获得返回值呢？
-	可以使用chan去获取返回值，但是这就要求在chan中必须返回值
-	经过一天的卡点，我决定使用最新的方式实现这么个功能。
-	*/
-	log.Printf("Received: %v", in.GetCandidateName())
-	// 1. 创建一个新的通道
-	ev := &common.Ev{Target: in, ReturnC: make(chan bool)}
-	fmt.Println(ev)
-	// 2. 将这个通道传入到server端
-	s.c <- ev
-	fmt.Println("已经将请求事件告知了循环")
-	// 3. 等待循环的处理结果
-	<-ev.ReturnC
-	fmt.Println("循环体已经执行结束啦，开始执行server的返回")
-	// 4. 将处理好的结果进行一个返还
-	return ev.ReturnValue.(*proto.VoteReply), nil
 
+	return nil, nil
 }
 
 /**
@@ -81,15 +54,8 @@ func (s *server) SendVoteRequest(ctx context.Context, in *proto.VoteRequest) (*p
  * @date 2021/1/16 3:40 下午
  */
 func (s *server) AppendEntries(ctx context.Context, in *proto.AppendEntriesRequest) (*proto.AppendEntriesReply, error) {
-	log.Printf("在AppendEntries中收到的leader节点的任期信息: %v", in.GetTerm())
-	// 1. 创建一个新的通道
-	ev := &common.Ev{Target: in, ReturnC: make(chan bool)}
-	// 2. 将这个通道传入到server端
-	s.c <- ev
-	// 3. 等待循环的处理结果
-	<-ev.ReturnC
-	// 4. 将处理好的结果进行一个返还
-	return ev.ReturnValue.(*proto.AppendEntriesReply), nil
+
+	return nil, nil
 }
 
 /**
@@ -100,7 +66,6 @@ func (s *server) AppendEntries(ctx context.Context, in *proto.AppendEntriesReque
 func NewServer() *server {
 	// 1. 初始化server文件
 	s := &server{
-		c: make(chan *common.Ev, 256),
 		// 配置其他节点的信息（其中包含有本机的信息）
 		Peers: []Peer{
 			{

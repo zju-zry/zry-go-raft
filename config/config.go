@@ -13,7 +13,7 @@ const (
 	// 超时时，时间设立的单位1s
 	TimeoutDurationUnit = 1000000000
 	HeartbeatInterval   = 50 * time.Millisecond
-	ElectionTimeout     = 2000 * time.Millisecond
+	ElectionTimeout     = 10000 * time.Millisecond
 
 	// 当前节点的三种状态
 	StateFollower  = "follower"
