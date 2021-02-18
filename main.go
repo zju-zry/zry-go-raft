@@ -27,8 +27,6 @@ func main() {
 			for _, peer := range s.Peers {
 				go peer.SendVoteRequest(&proto.VoteRequest{
 					Term:          s.CurrentTerm + 1,
-					LastLogIndex:  0,
-					LastLogTerm:   0,
 					CandidateName: s.Name,
 				}, respChan)
 				fmt.Println("发送请求投票信息到：", peer.ConnectionString)
