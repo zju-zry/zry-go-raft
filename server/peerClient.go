@@ -7,6 +7,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"google.golang.org/grpc"
 	"log"
 	"sync"
@@ -43,8 +44,9 @@ type Peer struct {
  * @author zhangruiyuan
  * @date 2021/1/17 1:40 下午
  */
-func (p *Peer) SendVoteRequest(request *pb.VoteRequest, respChan chan *pb.VoteReply) {
+func (p Peer) SendVoteRequest(request *pb.VoteRequest, respChan chan *pb.VoteReply) {
 	// 创建一条到服务端的链接
+	fmt.Println("连接请求：", p.ConnectionString)
 	conn, err := grpc.Dial(p.ConnectionString, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		log.Fatalf("链接不上服务器: %v", err)
@@ -69,6 +71,9 @@ func (p *Peer) SendVoteRequest(request *pb.VoteRequest, respChan chan *pb.VoteRe
  * @date 2021/1/17 5:34 下午
  */
 func (p Peer) sentHeartbeat(req *pb.AppendEntriesRequest) {
+
+	//fmt.Println("本节点发送了一条心脏请求",p.ConnectionString)
+
 	// 创建一条到服务端的链接
 	conn, err := grpc.Dial(p.ConnectionString, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
@@ -84,5 +89,6 @@ func (p Peer) sentHeartbeat(req *pb.AppendEntriesRequest) {
 	if err != nil {
 		log.Fatalf("完成投票请求中出现错误: %v", err)
 	}
-	log.Printf("Term: %d，PrevLogIndex: %d ", r.GetTerm(), r.GetPrevLogIndex())
+	r.GetTerm()
+	//log.Printf("Term: %d，PrevLogIndex: %d ", r.GetTerm(), r.GetPrevLogIndex())
 }

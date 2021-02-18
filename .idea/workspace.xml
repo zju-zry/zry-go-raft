@@ -2,19 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b9f34bb4-9442-4e02-975d-0a975c855ec6" name="Default Changelist" comment="feat: 完成选举功能">
-      <change afterPath="$PROJECT_DIR$/server/peerLoop.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/ev.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event/ax_events.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/event/main.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/enum/enum.go" beforeDir="false" afterPath="$PROJECT_DIR$/enum/enum.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proto/peer.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/proto/peer.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proto/peer.proto" beforeDir="false" afterPath="$PROJECT_DIR$/proto/peer.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/loop.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/question.md" beforeDir="false" afterPath="$PROJECT_DIR$/question.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/peerClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/peerClient.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/peerLoop.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/peerLoop.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/peerServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/peerServer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/peerServer-SendVoteRequest/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/peerServer-SendVoteRequest/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +32,14 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="1mK7vQcJRX0BIVR39KyRZrs2Vfo" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -66,11 +69,11 @@
       <recent name="$PROJECT_DIR$/experiment/grpc/server" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/common/enum" />
       <recent name="$PROJECT_DIR$/test/peerServer" />
       <recent name="$PROJECT_DIR$/test" />
       <recent name="$PROJECT_DIR$/proto" />
-      <recent name="$PROJECT_DIR$/server" />
     </key>
   </component>
   <component name="RunManager" selected="Go Build.order[7062]">
@@ -204,5 +207,12 @@
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="GoApplicationRunConfiguration">
+        <watch expression="s.State" language="go" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
