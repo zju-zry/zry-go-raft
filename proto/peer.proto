@@ -67,6 +67,8 @@ message AppendEntriesRequest {
   int64  CommitIndex = 4;
   // 当前节点的名称
   string  LeaderName = 5;
+  // 需要追加的数据
+  string  Massages = 6;
 }
 
 
@@ -80,4 +82,6 @@ message AppendEntriesReply {
   int64  Term = 1;
   // 自己当前节点的上一个日志索引信息
   int64  PrevLogIndex = 2;
+  // 当前节点的名称
+  string PeerName = 3;
 }

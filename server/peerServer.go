@@ -36,6 +36,26 @@ const (
 )
 
 /**
+ * @Description: 消息对象
+ * @author zhangruiyuan
+ * @date 2021/2/18 8:03 下午
+ */
+type message struct {
+	// 交易的编号
+	Index int64
+	// 提交该交易的用户名字
+	CommitName string
+	// 提交该交易的leader名字
+	LeaderName string
+	// 提交该笔交易的任期
+	Term int64
+	// 该笔交易的内容
+	Data string
+	// 提交该笔交易的时间
+	CommitTime time.Time
+}
+
+/**
  * @Description: server用来实现节点的服务：PeerServer.
  * @author zhangruiyuan
  * @date 2021/1/16 2:57 下午
@@ -61,6 +81,10 @@ type server struct {
 
 	// 超时状态
 	FTimeoutChan <-chan time.Time
+
+	// 系统操作的信息列表
+	MutexMessages sync.Mutex
+	Messages      []message
 }
 
 /**
@@ -106,13 +130,23 @@ func (s *server) SendVoteRequest(ctx context.Context, in *proto.VoteRequest) (*p
  */
 func (s *server) AppendEntries(ctx context.Context, in *proto.AppendEntriesRequest) (*proto.AppendEntriesReply, error) {
 	if in.GetTerm() >= s.GetCurrentTerm() {
-		fmt.Printf("收到leader节点%s发来的追加日志信息，本节点的状态立即转为follower\n", in.GetLeaderName())
 		s.SetCurrentTerm(in.GetTerm())
 		s.CurrentLeader = in.LeaderName
 		s.ResetFollowerState()
+		oldSize := s.GetMassagesHeight()
+		s.InsertMassagesJsonData(in.Massages) //接收发来的数据
+		newSize := s.GetMassagesHeight()
+		if newSize != oldSize {
+			s.ShowMassage()
+			fmt.Printf("收到leader节点%s发来的追加日志信息，本节点的状态立即转为follower。\n", in.GetLeaderName())
+		}
 	}
+	s.MutexMessages.Lock()
+	defer s.MutexMessages.Unlock()
 	return &proto.AppendEntriesReply{
-		Term: s.GetCurrentTerm(),
+		Term:         s.GetCurrentTerm(),
+		PrevLogIndex: int64(len(s.Messages)),
+		PeerName:     s.Name,
 	}, nil
 }
 
@@ -141,20 +175,29 @@ func NewServer() *server {
 			{
 				Name:             "org1.node1.order1",
 				ConnectionString: "127.0.0.1:7061",
+				PrevLogIndex:     0,
+				IfAsk:            false,
 			},
 			{
 				Name:             "org1.node2.order1",
 				ConnectionString: "127.0.0.1:7062",
+				PrevLogIndex:     0,
+				IfAsk:            false,
 			},
 			{
 				Name:             "org2.node1.order1",
 				ConnectionString: "127.0.0.1:7063",
+				PrevLogIndex:     0,
+				IfAsk:            false,
 			},
 			{
 				Name:             "org2.node2.order1",
 				ConnectionString: "127.0.0.1:7064",
+				PrevLogIndex:     0,
+				IfAsk:            false,
 			},
 		},
+		Messages: make([]message, 0), // 日志切片的初始化
 	}
 	// 2. 根据配置的字符串和ip信息，移除一下本节点的peer
 	for i, p := range s.Peers {

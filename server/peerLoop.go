@@ -107,6 +107,7 @@ func (s *server) candidateLoop() {
 				fmt.Println("收到了足够的票数，成为leader节点，当前任期为", newTerm)
 				s.SetState(StateLeader)
 				s.SetCurrentTerm(newTerm)
+				s.CurrentLeader = s.Name
 			}
 
 		case <-CTimeoutChan:
@@ -117,25 +118,56 @@ func (s *server) candidateLoop() {
 		default:
 
 		}
-
 	}
 }
 
 func (s *server) leaderLoop() {
-	// 当前节点是leader节点，
+	// 成功竞争为领导者，先向大家询问一下大家都是什么状态,默认是false
+	for _, p0 := range s.Peers {
+		p0.Lock()
+		defer p0.Unlock()
+		p0.IfAsk = false
+	}
 	// 向其他节点发送append消息
+	var respChan chan *proto.AppendEntriesReply
 	LTimeoutChan := util.AfterBetween(HeartbeatInterval, HeartbeatInterval*2)
 	for s.GetState() == StateLeader {
 		select {
 		case <-LTimeoutChan:
-			fmt.Println("我在执行leader事情")
+			respChan = make(chan *proto.AppendEntriesReply, len(s.Peers))
+			//fmt.Println("我在执行leader事情")
+			// leader节点应该向其他节点发送数据列表信息
 			for _, p := range s.Peers {
+				p.Lock()
+				defer p.Unlock()
+				jdata := "[]"
+				// 经过询问之后再发送相应的数据
+				if p.IfAsk {
+					jdata = s.GetMassagesJsonData(p.PrevLogIndex)
+				}
 				go p.sentHeartbeat(&proto.AppendEntriesRequest{
 					Term:       s.GetCurrentTerm(),
 					LeaderName: s.Name,
-				})
+					Massages:   jdata,
+				}, respChan)
 			}
 			LTimeoutChan = util.AfterBetween(HeartbeatInterval, HeartbeatInterval*2)
+
+		case res := <-respChan:
+			// 接收到其他节点发送的返回值，用以更新本机记录的pervLogIndex等信息
+			//fmt.Printf("接收到其他节点发送的返回值，用以更新本机记录的pervLogIndex等信息\n")
+			//fmt.Printf(res.PeerName,res.PrevLogIndex,res.Term,"\n")
+			for _, p := range s.Peers {
+				p.Lock()
+				defer p.Unlock()
+				if p.Name == res.PeerName {
+					p.PrevLogIndex = res.PrevLogIndex
+					p.IfAsk = true
+					fmt.Printf("将%s的状态修改了.\n", p.Name)
+					break
+				}
+			}
+
 		default:
 
 		}

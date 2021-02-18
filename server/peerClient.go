@@ -21,20 +21,13 @@ import (
  * @date 2021/1/17 1:29 下午
  */
 type Peer struct {
-	// Name：peer的名称
-	Name string `json:"name"`
-	// ConnectionString：peer的ip地址，形式为”ip:port”
-	ConnectionString string `json:"connectionString"`
-	// prevLogIndex：这个很关键，记录了该peer的当前日志index，接下来leader将该index之后的日志继续发往该peer
-	prevLogIndex uint64
-	// 停止通道？ 不知道是做什么用的
-	stopChan chan bool
-	// 心脏跳动的时间间隔
-	heartbeatInterval time.Duration
-	//lastActivity：记录peer的上次活跃时间
-	lastActivity time.Time
-	// 互斥保护当前Peer
-	sync.RWMutex
+	Name             string `json:"name"`             // Name：peer的名称
+	ConnectionString string `json:"connectionString"` // ConnectionString：peer的ip地址，形式为”ip:port”
+	PrevLogIndex     int64  // prevLogIndex：这个很关键，记录了该peer的当前日志index，接下来leader将该index之后的日志继续发往该peer
+
+	IfAsk bool // 初为leader，要问一下需要从什么时候开始的log
+
+	sync.RWMutex // 互斥保护当前Peer
 }
 
 /**
@@ -70,7 +63,7 @@ func (p Peer) SendVoteRequest(request *pb.VoteRequest, respChan chan *pb.VoteRep
  * @author zhangruiyuan
  * @date 2021/1/17 5:34 下午
  */
-func (p Peer) sentHeartbeat(req *pb.AppendEntriesRequest) {
+func (p Peer) sentHeartbeat(req *pb.AppendEntriesRequest, respChan chan *pb.AppendEntriesReply) {
 
 	//fmt.Println("本节点发送了一条心脏请求",p.ConnectionString)
 
@@ -85,10 +78,10 @@ func (p Peer) sentHeartbeat(req *pb.AppendEntriesRequest) {
 	// 与服务端通信，并将返回结果进行打印
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.AppendEntries(ctx, req)
+	res, err := c.AppendEntries(ctx, req)
 	if err != nil {
 		log.Fatalf("完成投票请求中出现错误: %v", err)
 	}
-	r.GetTerm()
-	//log.Printf("Term: %d，PrevLogIndex: %d ", r.GetTerm(), r.GetPrevLogIndex())
+	// 将返回的结果放在这个channel中， leader接收到这个返回值进行一个相应的处理
+	respChan <- res
 }

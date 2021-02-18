@@ -18,7 +18,7 @@ func main() {
 	command := ""
 	for {
 		fmt.Scanln(&command)
-		fmt.Println("正在执行命令：", command)
+		//fmt.Println("正在执行命令：", command)
 		switch command {
 		case "goLeader":
 			fmt.Println("成为leader ing ... ")
@@ -33,10 +33,28 @@ func main() {
 				}, respChan)
 				fmt.Println("发送请求投票信息到：", peer.ConnectionString)
 			}
-		case "CurrentLeader":
+		case "currentLeader":
 			fmt.Println(s.CurrentLeader)
 
+		case "addLog":
+			fmt.Printf("输入你在系统中留下的痕迹:")
+			msg := ""
+			fmt.Scanln(&msg)
+			// 将日志的信息追加到s.messages中
+			s.PushMassage(msg)
+
+		case "showLog":
+			s.ShowMassage()
+
+		case "showPrevLogIndex":
+			for _, p := range s.Peers {
+				p.Lock()
+				defer p.Unlock()
+				fmt.Printf("%s节点的前项日志索引为:%d,是否经过询问:%s\n", p.Name, p.PrevLogIndex, p.IfAsk)
+			}
+
 		}
+
 	}
 
 }

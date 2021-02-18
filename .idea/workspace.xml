@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9f34bb4-9442-4e02-975d-0a975c855ec6" name="Default Changelist" comment="feat: 完成选举功能">
+    <list default="true" id="b9f34bb4-9442-4e02-975d-0a975c855ec6" name="Default Changelist" comment="feat: 完成了选举leader节点的过程">
+      <change afterPath="$PROJECT_DIR$/server/peerMessage.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/enum/enum.go" beforeDir="false" afterPath="$PROJECT_DIR$/enum/enum.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proto/peer.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/proto/peer.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proto/peer.proto" beforeDir="false" afterPath="$PROJECT_DIR$/proto/peer.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/question.md" beforeDir="false" afterPath="$PROJECT_DIR$/question.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/peerClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/peerClient.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/peerLoop.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/peerLoop.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/peerServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/peerServer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/work.md" beforeDir="false" afterPath="$PROJECT_DIR$/work.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +66,7 @@
     <property name="configurable.GoLibrariesConfigurable.is.expanded" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/test/peerServer-AppendEntries" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="settings.editor.selected.configurable" value="preferences.intentionPowerPack" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -76,7 +82,7 @@
       <recent name="$PROJECT_DIR$/proto" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.order[7062]">
+  <component name="RunManager" selected="Go Build.order[7064]">
     <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="zry-raft" />
       <working_directory value="$PROJECT_DIR$" />
@@ -203,7 +209,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix: 在readme文件中修改了倒计时设置" />
     <MESSAGE value="feat: 完成选举功能" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 完成选举功能" />
+    <MESSAGE value="feat: 完成了选举leader节点的过程" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 完成了选举leader节点的过程" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

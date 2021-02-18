@@ -17,3 +17,6 @@
 2. 倒计时设置
    + HeartbeatInterval = 50 * time.Millisecond
    + ElectionTimeout   = 200 * time.Millisecond
+   
+3. 日志设置
+   + 第一个日志的编号为1
