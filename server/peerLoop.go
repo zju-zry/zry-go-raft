@@ -137,6 +137,7 @@ func (s *server) leaderLoop() {
 			respChan = make(chan *proto.AppendEntriesReply, len(s.Peers))
 			//fmt.Println("我在执行leader事情")
 			// leader节点应该向其他节点发送数据列表信息
+			s.MutexPeers.Lock()
 			for _, p := range s.Peers {
 				p.Lock()
 				defer p.Unlock()
@@ -151,22 +152,34 @@ func (s *server) leaderLoop() {
 					Massages:   jdata,
 				}, respChan)
 			}
+			s.MutexPeers.Unlock()
 			LTimeoutChan = util.AfterBetween(HeartbeatInterval, HeartbeatInterval*2)
 
 		case res := <-respChan:
 			// 接收到其他节点发送的返回值，用以更新本机记录的pervLogIndex等信息
 			//fmt.Printf("接收到其他节点发送的返回值，用以更新本机记录的pervLogIndex等信息\n")
 			//fmt.Printf(res.PeerName,res.PrevLogIndex,res.Term,"\n")
-			for _, p := range s.Peers {
-				p.Lock()
-				defer p.Unlock()
-				if p.Name == res.PeerName {
-					p.PrevLogIndex = res.PrevLogIndex
-					p.IfAsk = true
-					fmt.Printf("将%s的状态修改了.\n", p.Name)
+
+			s.MutexPeers.Lock()
+			for i := 0; i < len(s.Peers); i++ {
+				if s.Peers[i].Name == res.PeerName {
+					s.Peers[i].PrevLogIndex = res.PrevLogIndex
+					s.Peers[i].IfAsk = true
+					//fmt.Printf("将%s的状态修改了.\n", p.Name)
 					break
 				}
 			}
+			s.MutexPeers.Unlock()
+			//for _, p := range s.Peers {
+			//	p.Lock()
+			//	defer p.Unlock()
+			//	if p.Name == res.PeerName {
+			//		p.PrevLogIndex = res.PrevLogIndex
+			//		p.IfAsk = true
+			//		//fmt.Printf("将%s的状态修改了.\n", p.Name)
+			//		break
+			//	}
+			//}
 
 		default:
 

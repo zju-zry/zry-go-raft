@@ -47,12 +47,13 @@ func main() {
 			s.ShowMassage()
 
 		case "showPrevLogIndex":
+			s.MutexPeers.Lock()
 			for _, p := range s.Peers {
 				p.Lock()
 				defer p.Unlock()
 				fmt.Printf("%s节点的前项日志索引为:%d,是否经过询问:%s\n", p.Name, p.PrevLogIndex, p.IfAsk)
 			}
-
+			s.MutexPeers.Unlock()
 		}
 
 	}

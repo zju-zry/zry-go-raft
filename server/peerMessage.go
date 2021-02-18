@@ -9,6 +9,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"time"
+	"zry-raft/enum"
+	pb "zry-raft/proto"
 )
 
 /**
@@ -19,6 +21,43 @@ import (
 func (s *server) PushMassage(data string) {
 
 	// 1. 当前节点是leader节点的时候执行下面的操作
+	if s.Name == s.CurrentLeader {
+		s.DoPushMassage(data)
+	} else {
+		// 2. 当前节点不是leader节点的时候
+		// 需要将该日志信息发送到leader中，并获取leader的返回值进行显示。
+		// 日志的内容同步是另一个自动的步骤，在这里不需要等待同步leader中的数据成功之后再进行显示
+		// 日志的同步在append中进行
+		fmt.Println("正在向leader节点发送数据")
+		for _, p := range s.Peers {
+			if p.Name == s.CurrentLeader {
+				res := p.PushMessageToLeader(&pb.PushMessageRequest{
+					CommitName: s.Name,
+					Data:       data,
+				})
+				if res.GetStatus() == enum.Success {
+					fmt.Println("添加数据成功")
+					fmt.Printf("日志编号：%d\n", res.Index)
+					fmt.Printf("用户名字：%s\n", s.Name)
+					fmt.Printf("leader名字：%s \n", res.LeaderName)
+					fmt.Printf("任期：%d\n", res.Term)
+					fmt.Printf("内容：%s\n", data)
+					fmt.Printf("时间：%s\n", res.CommitTime)
+				} else {
+					fmt.Println("添加数据失败，可能是因为你找的这个节点并非leader节点")
+				}
+				break
+			}
+		}
+	}
+}
+
+/**
+ * @Description: 真正的提交message信息（ 当前节点为leader节点的时候本函数直接使用）
+ * @author zhangruiyuan
+ * @date 2021/2/19 12:06 上午
+ */
+func (s *server) DoPushMassage(data string) {
 	s.MutexMessages.Lock()
 	defer s.MutexMessages.Unlock()
 	s.Messages = append(s.Messages, message{
@@ -29,12 +68,6 @@ func (s *server) PushMassage(data string) {
 		Data:       data,
 		CommitTime: time.Now(),
 	})
-
-	// 2. 当前节点不是leader节点的时候
-	// 需要将该日志信息发送到leader中，并获取leader的返回值进行显示。
-	// 日志的内容同步是另一个自动的步骤，在这里不需要等待同步leader中的数据成功之后再进行显示
-	// 日志的同步在append中进行
-
 }
 
 /**
@@ -49,7 +82,7 @@ func (s *server) ShowMassage() {
 	fmt.Printf("下一个要记录的日志索引: %d \n", len(s.Messages)+1)
 	fmt.Printf("系统中存在的日志信息如下：\n")
 	for _, m := range s.Messages {
-		fmt.Printf("\n日志编号：%d\n", m.Index)
+		fmt.Printf("日志编号：%d\n", m.Index)
 		fmt.Printf("用户名字：%s\n", m.CommitName)
 		fmt.Printf("leader名字：%s \n", m.LeaderName)
 		fmt.Printf("任期：%d\n", m.Term)

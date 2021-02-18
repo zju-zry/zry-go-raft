@@ -61,7 +61,8 @@ type message struct {
  * @date 2021/1/16 2:57 下午
  */
 type server struct {
-	Peers []Peer
+	MutexPeers sync.Mutex
+	Peers      []Peer
 	// 本节点的名称
 	Name string
 	// 每个节点总是处于以下状态的一种：follower、candidate、leader
@@ -137,7 +138,7 @@ func (s *server) AppendEntries(ctx context.Context, in *proto.AppendEntriesReque
 		s.InsertMassagesJsonData(in.Massages) //接收发来的数据
 		newSize := s.GetMassagesHeight()
 		if newSize != oldSize {
-			s.ShowMassage()
+			//s.ShowMassage()
 			fmt.Printf("收到leader节点%s发来的追加日志信息，本节点的状态立即转为follower。\n", in.GetLeaderName())
 		}
 	}
@@ -148,6 +149,38 @@ func (s *server) AppendEntries(ctx context.Context, in *proto.AppendEntriesReque
 		PrevLogIndex: int64(len(s.Messages)),
 		PeerName:     s.Name,
 	}, nil
+}
+
+/**
+ * @Description: 向leader节点追加消息
+ * @author zhangruiyuan
+ * @date 2021/2/19 12:00 上午
+ */
+func (s *server) PushMessage(ctx context.Context, in *proto.PushMessageRequest) (*proto.PushMessageReply, error) {
+	if s.GetState() == StateLeader {
+		s.MutexMessages.Lock()
+		defer s.MutexMessages.Unlock()
+		nt := time.Now()
+		res := &proto.PushMessageReply{
+			Index:      int64(len(s.Messages)),
+			LeaderName: s.Name,
+			Term:       s.CurrentTerm,
+			CommitTime: nt.String(),
+			Status:     enum.Success,
+		}
+		// 追加数据
+		s.Messages = append(s.Messages, message{
+			Index:      res.Index,
+			CommitName: in.CommitName,
+			LeaderName: res.LeaderName,
+			Term:       res.Term,
+			Data:       in.Data,
+			CommitTime: nt,
+		})
+		return res, nil
+	} else {
+		return &proto.PushMessageReply{Status: enum.Fail}, nil
+	}
 }
 
 /**

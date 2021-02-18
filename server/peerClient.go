@@ -80,8 +80,33 @@ func (p Peer) sentHeartbeat(req *pb.AppendEntriesRequest, respChan chan *pb.Appe
 	defer cancel()
 	res, err := c.AppendEntries(ctx, req)
 	if err != nil {
-		log.Fatalf("完成投票请求中出现错误: %v", err)
+		log.Fatalf("发送心跳信息中出现错误: %v", err)
 	}
 	// 将返回的结果放在这个channel中， leader接收到这个返回值进行一个相应的处理
 	respChan <- res
+}
+
+/**
+ * @Description: 向leader节点提交日志信息
+ * @author zhangruiyuan
+ * @date 2021/1/17 5:34 下午
+ */
+func (p Peer) PushMessageToLeader(req *pb.PushMessageRequest) *pb.PushMessageReply {
+	// 创建一条到服务端的链接
+	conn, err := grpc.Dial(p.ConnectionString, grpc.WithInsecure(), grpc.WithBlock())
+	if err != nil {
+		log.Fatalf("链接不上服务器: %v", err)
+	}
+	defer conn.Close()
+	c := pb.NewPeerClient(conn)
+
+	// 与服务端通信，并将返回结果进行打印
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := c.PushMessage(ctx, req)
+	if err != nil {
+		log.Fatalf("提交日志信息到leader中出现错误: %v", err)
+	}
+	// 将返回的结果放在这个channel中， leader接收到这个返回值进行一个相应的处理
+	return res
 }

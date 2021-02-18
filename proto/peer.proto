@@ -22,8 +22,20 @@ service Peer {
    * @date 2021/1/15 9:04 下午
    */
   rpc SendVoteRequest (VoteRequest) returns (VoteReply) {}
+
+  /**
+   * @Description: 追加日志信息，心跳信息
+   * @author zhangruiyuan
+   * @date 2021/2/18 11:41 下午
+   */
   rpc AppendEntries (AppendEntriesRequest) returns (AppendEntriesReply){}
 
+  /**
+   * @Description: 向leader节点追加日志信息
+   * @author zhangruiyuan
+   * @date 2021/2/18 11:45 下午
+   */
+  rpc PushMessage (PushMessageRequest) returns(PushMessageReply){}
 }
 
 
@@ -84,4 +96,34 @@ message AppendEntriesReply {
   int64  PrevLogIndex = 2;
   // 当前节点的名称
   string PeerName = 3;
+}
+
+/**
+ * @Description: 向leader节点追加message信息
+ * @author zhangruiyuan
+ * @date 2021/2/18 11:46 下午
+ */
+message PushMessageRequest{
+  // 发起交易的用户名字
+  string CommitName = 1;
+  // 交易内容（日志）
+  string Data = 2;
+}
+
+/**
+ * @Description: 向leader节点追加message信息的返回值
+ * @author zhangruiyuan
+ * @date 2021/2/18 11:55 下午
+ */
+message PushMessageReply{
+  // 日志的编号信息
+  int64 Index = 1;
+  // leader的名称
+  string LeaderName = 2;
+  // leader所在的任期
+  int64 Term =3;
+  // 创建时间
+  string CommitTime = 4;
+  // 添加信息的状态，一般直接为enum.success
+  int64 Status = 5;
 }

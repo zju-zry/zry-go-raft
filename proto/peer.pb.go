@@ -336,6 +336,155 @@ func (x *AppendEntriesReply) GetPeerName() string {
 	return ""
 }
 
+//*
+// @Description: 向leader节点追加message信息
+// @author zhangruiyuan
+// @date 2021/2/18 11:46 下午
+type PushMessageRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// 发起交易的用户名字
+	CommitName string `protobuf:"bytes,1,opt,name=CommitName,proto3" json:"CommitName,omitempty"`
+	// 交易内容（日志）
+	Data string `protobuf:"bytes,2,opt,name=Data,proto3" json:"Data,omitempty"`
+}
+
+func (x *PushMessageRequest) Reset() {
+	*x = PushMessageRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_peer_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PushMessageRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PushMessageRequest) ProtoMessage() {}
+
+func (x *PushMessageRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_peer_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PushMessageRequest.ProtoReflect.Descriptor instead.
+func (*PushMessageRequest) Descriptor() ([]byte, []int) {
+	return file_peer_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *PushMessageRequest) GetCommitName() string {
+	if x != nil {
+		return x.CommitName
+	}
+	return ""
+}
+
+func (x *PushMessageRequest) GetData() string {
+	if x != nil {
+		return x.Data
+	}
+	return ""
+}
+
+//*
+// @Description: 向leader节点追加message信息的返回值
+// @author zhangruiyuan
+// @date 2021/2/18 11:55 下午
+type PushMessageReply struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// 日志的编号信息
+	Index int64 `protobuf:"varint,1,opt,name=Index,proto3" json:"Index,omitempty"`
+	// leader的名称
+	LeaderName string `protobuf:"bytes,2,opt,name=LeaderName,proto3" json:"LeaderName,omitempty"`
+	// leader所在的任期
+	Term int64 `protobuf:"varint,3,opt,name=Term,proto3" json:"Term,omitempty"`
+	// 创建时间
+	CommitTime string `protobuf:"bytes,4,opt,name=CommitTime,proto3" json:"CommitTime,omitempty"`
+	// 添加信息的状态，一般直接为enum.success
+	Status int64 `protobuf:"varint,5,opt,name=Status,proto3" json:"Status,omitempty"`
+}
+
+func (x *PushMessageReply) Reset() {
+	*x = PushMessageReply{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_peer_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PushMessageReply) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PushMessageReply) ProtoMessage() {}
+
+func (x *PushMessageReply) ProtoReflect() protoreflect.Message {
+	mi := &file_peer_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PushMessageReply.ProtoReflect.Descriptor instead.
+func (*PushMessageReply) Descriptor() ([]byte, []int) {
+	return file_peer_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *PushMessageReply) GetIndex() int64 {
+	if x != nil {
+		return x.Index
+	}
+	return 0
+}
+
+func (x *PushMessageReply) GetLeaderName() string {
+	if x != nil {
+		return x.LeaderName
+	}
+	return ""
+}
+
+func (x *PushMessageReply) GetTerm() int64 {
+	if x != nil {
+		return x.Term
+	}
+	return 0
+}
+
+func (x *PushMessageReply) GetCommitTime() string {
+	if x != nil {
+		return x.CommitTime
+	}
+	return ""
+}
+
+func (x *PushMessageReply) GetStatus() int64 {
+	if x != nil {
+		return x.Status
+	}
+	return 0
+}
+
 var File_peer_proto protoreflect.FileDescriptor
 
 var file_peer_proto_rawDesc = []byte{
@@ -375,17 +524,36 @@ var file_peer_proto_rawDesc = []byte{
 	0x65, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0c, 0x50, 0x72, 0x65, 0x76, 0x4c, 0x6f,
 	0x67, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x1a, 0x0a, 0x08, 0x50, 0x65, 0x65, 0x72, 0x4e, 0x61,
 	0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x50, 0x65, 0x65, 0x72, 0x4e, 0x61,
-	0x6d, 0x65, 0x32, 0x90, 0x01, 0x0a, 0x04, 0x50, 0x65, 0x65, 0x72, 0x12, 0x3b, 0x0a, 0x0f, 0x53,
-	0x65, 0x6e, 0x64, 0x56, 0x6f, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x13,
-	0x2e, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x2e, 0x56, 0x6f, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x2e, 0x56, 0x6f, 0x74,
-	0x65, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x12, 0x4b, 0x0a, 0x0d, 0x41, 0x70, 0x70, 0x65,
-	0x6e, 0x64, 0x45, 0x6e, 0x74, 0x72, 0x69, 0x65, 0x73, 0x12, 0x1c, 0x2e, 0x73, 0x65, 0x72, 0x76,
-	0x65, 0x72, 0x2e, 0x41, 0x70, 0x70, 0x65, 0x6e, 0x64, 0x45, 0x6e, 0x74, 0x72, 0x69, 0x65, 0x73,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72,
-	0x2e, 0x41, 0x70, 0x70, 0x65, 0x6e, 0x64, 0x45, 0x6e, 0x74, 0x72, 0x69, 0x65, 0x73, 0x52, 0x65,
-	0x70, 0x6c, 0x79, 0x22, 0x00, 0x42, 0x10, 0x5a, 0x0e, 0x7a, 0x72, 0x79, 0x2d, 0x72, 0x61, 0x66,
-	0x74, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6d, 0x65, 0x22, 0x48, 0x0a, 0x12, 0x50, 0x75, 0x73, 0x68, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67,
+	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1e, 0x0a, 0x0a, 0x43, 0x6f, 0x6d, 0x6d,
+	0x69, 0x74, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x43, 0x6f,
+	0x6d, 0x6d, 0x69, 0x74, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x44, 0x61, 0x74, 0x61,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x44, 0x61, 0x74, 0x61, 0x22, 0x94, 0x01, 0x0a,
+	0x10, 0x50, 0x75, 0x73, 0x68, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x70, 0x6c,
+	0x79, 0x12, 0x14, 0x0a, 0x05, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03,
+	0x52, 0x05, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x1e, 0x0a, 0x0a, 0x4c, 0x65, 0x61, 0x64, 0x65,
+	0x72, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x4c, 0x65, 0x61,
+	0x64, 0x65, 0x72, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x54, 0x65, 0x72, 0x6d, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x54, 0x65, 0x72, 0x6d, 0x12, 0x1e, 0x0a, 0x0a, 0x43,
+	0x6f, 0x6d, 0x6d, 0x69, 0x74, 0x54, 0x69, 0x6d, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x0a, 0x43, 0x6f, 0x6d, 0x6d, 0x69, 0x74, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x53,
+	0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x05, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x53, 0x74, 0x61,
+	0x74, 0x75, 0x73, 0x32, 0xd7, 0x01, 0x0a, 0x04, 0x50, 0x65, 0x65, 0x72, 0x12, 0x3b, 0x0a, 0x0f,
+	0x53, 0x65, 0x6e, 0x64, 0x56, 0x6f, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
+	0x13, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x2e, 0x56, 0x6f, 0x74, 0x65, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x2e, 0x56, 0x6f,
+	0x74, 0x65, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x12, 0x4b, 0x0a, 0x0d, 0x41, 0x70, 0x70,
+	0x65, 0x6e, 0x64, 0x45, 0x6e, 0x74, 0x72, 0x69, 0x65, 0x73, 0x12, 0x1c, 0x2e, 0x73, 0x65, 0x72,
+	0x76, 0x65, 0x72, 0x2e, 0x41, 0x70, 0x70, 0x65, 0x6e, 0x64, 0x45, 0x6e, 0x74, 0x72, 0x69, 0x65,
+	0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x65,
+	0x72, 0x2e, 0x41, 0x70, 0x70, 0x65, 0x6e, 0x64, 0x45, 0x6e, 0x74, 0x72, 0x69, 0x65, 0x73, 0x52,
+	0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x12, 0x45, 0x0a, 0x0b, 0x50, 0x75, 0x73, 0x68, 0x4d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x1a, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x2e, 0x50,
+	0x75, 0x73, 0x68, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x18, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x2e, 0x50, 0x75, 0x73, 0x68, 0x4d,
+	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x00, 0x42, 0x10, 0x5a,
+	0x0e, 0x7a, 0x72, 0x79, 0x2d, 0x72, 0x61, 0x66, 0x74, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -400,20 +568,24 @@ func file_peer_proto_rawDescGZIP() []byte {
 	return file_peer_proto_rawDescData
 }
 
-var file_peer_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_peer_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_peer_proto_goTypes = []interface{}{
 	(*VoteRequest)(nil),          // 0: server.VoteRequest
 	(*VoteReply)(nil),            // 1: server.VoteReply
 	(*AppendEntriesRequest)(nil), // 2: server.AppendEntriesRequest
 	(*AppendEntriesReply)(nil),   // 3: server.AppendEntriesReply
+	(*PushMessageRequest)(nil),   // 4: server.PushMessageRequest
+	(*PushMessageReply)(nil),     // 5: server.PushMessageReply
 }
 var file_peer_proto_depIdxs = []int32{
 	0, // 0: server.Peer.SendVoteRequest:input_type -> server.VoteRequest
 	2, // 1: server.Peer.AppendEntries:input_type -> server.AppendEntriesRequest
-	1, // 2: server.Peer.SendVoteRequest:output_type -> server.VoteReply
-	3, // 3: server.Peer.AppendEntries:output_type -> server.AppendEntriesReply
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+	4, // 2: server.Peer.PushMessage:input_type -> server.PushMessageRequest
+	1, // 3: server.Peer.SendVoteRequest:output_type -> server.VoteReply
+	3, // 4: server.Peer.AppendEntries:output_type -> server.AppendEntriesReply
+	5, // 5: server.Peer.PushMessage:output_type -> server.PushMessageReply
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -473,6 +645,30 @@ func file_peer_proto_init() {
 				return nil
 			}
 		}
+		file_peer_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PushMessageRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_peer_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PushMessageReply); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -480,7 +676,7 @@ func file_peer_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_peer_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -511,7 +707,16 @@ type PeerClient interface {
 	// @author zhangruiyuan
 	// @date 2021/1/15 9:04 下午
 	SendVoteRequest(ctx context.Context, in *VoteRequest, opts ...grpc.CallOption) (*VoteReply, error)
+	//*
+	// @Description: 追加日志信息，心跳信息
+	// @author zhangruiyuan
+	// @date 2021/2/18 11:41 下午
 	AppendEntries(ctx context.Context, in *AppendEntriesRequest, opts ...grpc.CallOption) (*AppendEntriesReply, error)
+	//*
+	// @Description: 向leader节点追加日志信息
+	// @author zhangruiyuan
+	// @date 2021/2/18 11:45 下午
+	PushMessage(ctx context.Context, in *PushMessageRequest, opts ...grpc.CallOption) (*PushMessageReply, error)
 }
 
 type peerClient struct {
@@ -540,6 +745,15 @@ func (c *peerClient) AppendEntries(ctx context.Context, in *AppendEntriesRequest
 	return out, nil
 }
 
+func (c *peerClient) PushMessage(ctx context.Context, in *PushMessageRequest, opts ...grpc.CallOption) (*PushMessageReply, error) {
+	out := new(PushMessageReply)
+	err := c.cc.Invoke(ctx, "/server.Peer/PushMessage", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PeerServer is the server API for Peer service.
 type PeerServer interface {
 	//*
@@ -547,7 +761,16 @@ type PeerServer interface {
 	// @author zhangruiyuan
 	// @date 2021/1/15 9:04 下午
 	SendVoteRequest(context.Context, *VoteRequest) (*VoteReply, error)
+	//*
+	// @Description: 追加日志信息，心跳信息
+	// @author zhangruiyuan
+	// @date 2021/2/18 11:41 下午
 	AppendEntries(context.Context, *AppendEntriesRequest) (*AppendEntriesReply, error)
+	//*
+	// @Description: 向leader节点追加日志信息
+	// @author zhangruiyuan
+	// @date 2021/2/18 11:45 下午
+	PushMessage(context.Context, *PushMessageRequest) (*PushMessageReply, error)
 }
 
 // UnimplementedPeerServer can be embedded to have forward compatible implementations.
@@ -559,6 +782,9 @@ func (*UnimplementedPeerServer) SendVoteRequest(context.Context, *VoteRequest) (
 }
 func (*UnimplementedPeerServer) AppendEntries(context.Context, *AppendEntriesRequest) (*AppendEntriesReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AppendEntries not implemented")
+}
+func (*UnimplementedPeerServer) PushMessage(context.Context, *PushMessageRequest) (*PushMessageReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PushMessage not implemented")
 }
 
 func RegisterPeerServer(s *grpc.Server, srv PeerServer) {
@@ -601,6 +827,24 @@ func _Peer_AppendEntries_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Peer_PushMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PushMessageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PeerServer).PushMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/server.Peer/PushMessage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PeerServer).PushMessage(ctx, req.(*PushMessageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Peer_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "server.Peer",
 	HandlerType: (*PeerServer)(nil),
@@ -612,6 +856,10 @@ var _Peer_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AppendEntries",
 			Handler:    _Peer_AppendEntries_Handler,
+		},
+		{
+			MethodName: "PushMessage",
+			Handler:    _Peer_PushMessage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

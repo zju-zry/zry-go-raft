@@ -4,18 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9f34bb4-9442-4e02-975d-0a975c855ec6" name="Default Changelist" comment="feat: 完成了选举leader节点的过程">
-      <change afterPath="$PROJECT_DIR$/server/peerMessage.go" afterDir="false" />
+    <list default="true" id="b9f34bb4-9442-4e02-975d-0a975c855ec6" name="Default Changelist" comment="feat: 当前的状态为，能够正常选举leader并稳定运行，但是在同步日志信息上遇到了问题">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/proto/peer.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/proto/peer.pb.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/proto/peer.proto" beforeDir="false" afterPath="$PROJECT_DIR$/proto/peer.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/question.md" beforeDir="false" afterPath="$PROJECT_DIR$/question.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/peerClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/peerClient.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/peerLoop.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/peerLoop.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/peerMessage.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/peerMessage.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/peerServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/peerServer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/work.md" beforeDir="false" afterPath="$PROJECT_DIR$/work.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -210,7 +207,8 @@
     <MESSAGE value="fix: 在readme文件中修改了倒计时设置" />
     <MESSAGE value="feat: 完成选举功能" />
     <MESSAGE value="feat: 完成了选举leader节点的过程" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 完成了选举leader节点的过程" />
+    <MESSAGE value="feat: 当前的状态为，能够正常选举leader并稳定运行，但是在同步日志信息上遇到了问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 当前的状态为，能够正常选举leader并稳定运行，但是在同步日志信息上遇到了问题" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
