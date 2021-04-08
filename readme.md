@@ -58,7 +58,6 @@
 4. 操作演示
    
 ```shell
-   goLeader            主动申请成为leader节点（代码有问题，还在测试中）
    currentLeader       展示系统当前的leader节点
    addLog              在系统中添加日志信息（若本节点为leader则直接添加，若本节点是普通节点就需要向leader转发）
    showLog             展示系统中的日志信息

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"zry-raft/proto"
 	"zry-raft/server"
 )
 
@@ -20,17 +19,6 @@ func main() {
 		fmt.Scanln(&command)
 		//fmt.Println("正在执行命令：", command)
 		switch command {
-		case "goLeader":
-			fmt.Println("成为leader ing ... ")
-			respChan := make(chan *proto.VoteReply, len(s.Peers))
-			s.State = server.StateCandidate
-			for _, peer := range s.Peers {
-				go peer.SendVoteRequest(&proto.VoteRequest{
-					Term:          s.CurrentTerm + 1,
-					CandidateName: s.Name,
-				}, respChan)
-				fmt.Println("发送请求投票信息到：", peer.ConnectionString)
-			}
 		case "currentLeader":
 			fmt.Println(s.CurrentLeader)
 
@@ -52,6 +40,15 @@ func main() {
 				fmt.Printf("%s节点的前项日志索引为:%d,是否经过询问:%s\n", p.Name, p.PrevLogIndex, p.IfAsk)
 			}
 			s.MutexPeers.Unlock()
+
+		default:
+			fmt.Println()
+			fmt.Println("共识节点的命令如下")
+			fmt.Println("currentLeader      展示系统当前的leader")
+			fmt.Println("addLog             测试追加日志")
+			fmt.Println("showLog            展示系统中的日志")
+			fmt.Println("showPrevLogIndex   展示系统当前最大的日志编号")
+			fmt.Println()
 		}
 
 	}

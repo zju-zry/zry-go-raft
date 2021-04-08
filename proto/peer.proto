@@ -98,6 +98,29 @@ message AppendEntriesReply {
   string PeerName = 3;
 }
 
+
+/**
+ * @Description: 区块链的交易定义
+ * @author zhangruiyuan
+ * @date 2021/3/14 6:47 下午
+ */
+message TransactionDefine{
+  // hash
+  string key=1;
+  // 交易参数
+  bytes data=2;
+  // 交易的提交者
+  string committer=3;
+  // 交易的时间
+  string time=4;
+  // 交易的签名
+  string signature=5;
+  // 交易的类型
+  int32 type=6;
+  // 通道的编号
+  string channelid=7;
+}
+
 /**
  * @Description: 向leader节点追加message信息
  * @author zhangruiyuan
@@ -108,6 +131,8 @@ message PushMessageRequest{
   string CommitName = 1;
   // 交易内容（日志）
   string Data = 2;
+  // 具体交易内容
+  TransactionDefine Transaction = 3;
 }
 
 /**
